@@ -1,0 +1,28 @@
+-- 루시와 엘라 찾기
+SELECT ANIMAL_ID, NAME, SEX_UPON_INTAKE from animal_ins
+where name IN ('Lucy',"Ella" ,"Pickle" , "Rogan" ,"Sabrina" ,"Mitty")
+order by animal_id
+
+-- 이름에 el이 들어가는 동물 찾기
+SELECT animal_id, name from animal_ins
+where name like '%el%' and animal_type = "Dog"
+order by name
+
+-- 중성화 여부 파악하기
+SELECT animal_id, name, 
+case 
+when SEX_UPON_INTAKE like "%Neutered%"  or SEX_UPON_INTAKE like "%Spayed%" then 'O'
+else 'X'
+end 
+as '중성화'
+from animal_ins
+
+-- 오랜 기간 보호한 동물(2)
+SELECT ins.ANIMAL_ID, ins.NAME from animal_ins ins, animal_outs outs 
+where ins.animal_id = outs.animal_id
+order by outs.datetime - ins.DATETIME desc
+limit 2
+
+-- DATETIME에서 DATE로 형 변환
+SELECT animal_id, name, date_format(datetime, '%Y-%m-%d') as 날짜
+from animal_ins

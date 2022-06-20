@@ -1,0 +1,25 @@
+-- 없어진 기록 찾기
+SELECT outs.animal_id, outs.name from animal_ins ins right outer join animal_outs outs on ins.animal_id = outs.animal_id
+where ins.animal_id is null
+order by animal_id
+
+-- 있었는데요 없었습니다
+SELECT ins.animal_id, ins.name from animal_ins ins 
+left join animal_outs outs 
+on ins.animal_id = outs.animal_id
+where ins.datetime > outs.datetime 
+order by ins.datetime 
+
+-- 오랜 기간 보호한 동물(1)
+SELECT ins.name, ins.datetime 
+from animal_ins ins left join animal_outs outs 
+on ins.animal_id = outs.animal_id
+where outs.datetime is null
+order by ins.datetime
+limit 3
+
+-- 보호소에서 중성화한 동물
+
+SELECT i.animal_id, i.animal_type, i.name from animal_ins i join animal_outs o
+where  i.animal_id = o.animal_id and i.sex_upon_intake != o.sex_upon_outcome 
+order by i.animal_id

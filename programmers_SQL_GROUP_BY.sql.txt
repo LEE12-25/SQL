@@ -1,0 +1,25 @@
+-- 고양이와 개는 몇 마리 있을까
+SELECT ANIMAL_TYPE, COUNT(ANIMAL_TYPE) AS "count" FROM ANIMAL_INS
+GROUP BY ANIMAL_TYPE
+ORDER BY ANIMAL_TYPE
+
+-- 동명 동물 수 찾기
+SELECT NAME, COUNT(NAME) AS 'COUNT' FROM ANIMAL_INS
+WHERE NAME IS NOT NULL
+GROUP BY NAME
+HAVING COUNT(NAME) >=2
+ORDER BY NAME
+
+-- 입양 시각 구하기(1)
+SELECT hour(datetime) as 'HOUR', count(datetime) as 'COUNT' from ANIMAL_OUTS
+-- where HOUR(datetime) >= 9 and HOUR <20 
+group by hour(datetime)
+having HOUR >= 9 and HOUR <= 19
+order by hour(datetime)
+
+-- 입양 시각 구하기(2)
+set @hour := -1;
+select (@hour := @hour +1 ) as HOUR, 
+(select count(*) from animal_outs where hour(datetime) = @hour) as COUNT 
+from animal_outs
+where @hour <23
